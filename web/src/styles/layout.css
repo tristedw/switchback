@@ -1,0 +1,284 @@
+/* bevels, straight out of the aster sprites: black edge, white top left, grey bottom right */
+.raised {
+  background: var(--face);
+  border: 1px solid var(--edge);
+  box-shadow: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+}
+
+.sunken {
+  background: var(--canvas);
+  border: 1px solid var(--edge);
+  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+}
+
+.shell {
+  display: grid;
+  grid-template-rows: var(--top-h) 1fr var(--nav-h);
+  height: 100%;
+  height: 100dvh;
+}
+
+/* ---- top bar ---- */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 8px 0 12px;
+  background: var(--face);
+  border-bottom: 1px solid var(--edge);
+  box-shadow: inset 0 2px 0 var(--hi), inset 0 -2px 0 var(--lo);
+  color: var(--face-ink);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--pixel);
+  font-weight: 600;
+  font-size: var(--t-md);
+}
+
+.brand svg {
+  width: 26px;
+  height: 18px;
+}
+
+.telltales {
+  list-style: none;
+  margin: 0 0 0 6px;
+  padding: 4px 6px;
+  display: flex;
+  gap: 2px;
+  background: var(--canvas);
+  border: 1px solid var(--edge);
+  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+}
+
+.telltales li {
+  width: 26px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  color: var(--cink-2);
+  opacity: 0.35;
+}
+
+.telltales svg {
+  width: 18px;
+  height: 18px;
+}
+
+.telltales li[data-light] {
+  opacity: 1;
+}
+
+.telltales li[data-light='amber'] {
+  background: var(--warn);
+  color: #000;
+}
+
+.telltales li[data-light='red'] {
+  background: var(--heat);
+  color: #fff;
+  animation: blink 0.9s steps(2) infinite;
+}
+
+.telltales li[data-light='green'] {
+  background: var(--ok);
+  color: #000;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.links {
+  display: flex;
+  gap: 10px;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--pixel);
+  font-size: var(--t-xs);
+  color: var(--face-ink);
+  background: none;
+  border: 0;
+  padding: 4px 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  background: var(--stamp);
+  border: 1px solid var(--edge);
+  flex: none;
+}
+
+.dot[data-s='live'] {
+  background: var(--ok);
+}
+.dot[data-s='sim'],
+.dot[data-s='connecting'] {
+  background: var(--warn);
+}
+.dot[data-s='connecting'] {
+  animation: blink 1s steps(2) infinite;
+}
+.dot[data-s='error'] {
+  background: var(--heat);
+}
+
+.topbar .spacer {
+  flex: 1;
+}
+
+.clock {
+  display: flex;
+}
+
+.icon-btn {
+  min-width: 34px;
+  height: 30px;
+  padding: 0 10px;
+  display: grid;
+  place-items: center;
+  background: var(--face);
+  border: 1px solid var(--edge);
+  box-shadow: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+  color: var(--face-ink);
+  font-family: var(--pixel);
+  font-size: var(--t-xs);
+}
+
+.icon-btn:active {
+  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+}
+
+.icon-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---- main ---- */
+.main {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--pad);
+  position: relative;
+}
+
+.screen {
+  display: grid;
+  gap: var(--gap);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ---- bottom taskbar ---- */
+.nav {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  gap: 4px;
+  padding: 5px 6px;
+  background: var(--face);
+  border-top: 1px solid var(--edge);
+  box-shadow: inset 0 2px 0 var(--hi);
+}
+
+.nav button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: var(--face);
+  border: 1px solid var(--edge);
+  box-shadow: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+  color: var(--face-ink);
+  font-family: var(--pixel);
+  font-size: var(--t-sm);
+  position: relative;
+}
+
+.nav button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* active screen is the pushed in button, like a taskbar */
+.nav button[aria-current='page'] {
+  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  background-image: radial-gradient(var(--hi) 0.5px, transparent 0.6px);
+  background-size: 2px 2px;
+  font-weight: 600;
+}
+
+.nav .led {
+  display: none;
+}
+
+.nav .badge {
+  position: absolute;
+  top: 4px;
+  right: 6px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  background: var(--heat);
+  color: #fff;
+  border: 1px solid var(--edge);
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .links .link span {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .telltales {
+    display: none;
+  }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --pad: 8px;
+    --top-h: 46px;
+  }
+  .nav {
+    gap: 2px;
+    padding: 4px;
+  }
+  .nav button {
+    flex-direction: column;
+    gap: 2px;
+  }
+  .nav button span {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 420px) {
+  .brand span {
+    display: none;
+  }
+}

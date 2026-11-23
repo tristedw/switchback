@@ -1,0 +1,14 @@
+[Unit]
+Description=switchback homebase
+After=network-online.target
+
+[Service]
+WorkingDirectory=/home/pi/switchback/homebase
+ExecStart=/usr/bin/node server.js
+Restart=always
+Environment=PORT=8787
+# Environment=NTFY_TOPIC=pick-something-long-and-random
+User=pi
+
+[Install]
+WantedBy=multi-user.target

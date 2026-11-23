@@ -1,0 +1,8 @@
+node_modules/
+dist/
+homebase/data/
+firmware/esp32-camper/.pio/
+firmware/esp32-camper/include/config.h
+.DS_Store
+*.log
+*.tsbuildinfo

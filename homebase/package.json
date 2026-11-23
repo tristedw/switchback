@@ -1,0 +1,17 @@
+{
+  "name": "switchback-homebase",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Runs on the pi in the camper. Takes ESP32 sensor posts, relays to dashboards, logs everything.",
+  "scripts": {
+    "start": "node server.js",
+    "fake-esp": "node tools/fake-esp.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "^8.23.0"
+  }
+}
