@@ -26,7 +26,7 @@ Dashboard for my truck and slide in camper. Runs on a 7" screen in the camper of
 
 ### Warning lights
 
-The strip up top is a cluster style idiot light row: check engine, coolant, charging, low fuel, house power, propane, door, freeze, guard. Yellow for warnings, red and blinking for the ones that need you now.
+The tile in the dock is a cluster style idiot light grid: check engine, coolant, charging, low fuel, house power, propane, door, freeze, guard. Yellow for warnings, red and blinking for the ones that need you now.
 
 Alarms that run all the time:
 
@@ -44,15 +44,16 @@ Alarms that run all the time:
 | Pressure falling | 3 hPa drop over 3 hours |
 | Quiet hours | idling at camp after 10pm |
 
-Crit alarms klaxon until acknowledged and get read out with speech synthesis. Everything can be snoozed. Thresholds live in Setup.
+Alarms come up as attention panels with a quiet beep, two for critical. An unacked critical blips again every couple of minutes. Return acks the front one, Esc acks all. Thresholds live in Setup.
 
 ### Other bits
 
-- NeXTSTEP style by default, a System 7 theme for sun glare, and a red only night theme so you keep your night vision. auto switches to night after dark
+- NeXTSTEP 3.3 style: main menu top left, dock down the right with a clock tile and the warning lights, black title bar on the window you're using, miniaturize drops a window to a miniwindow, scroller on the left. content areas are dark
+- red only night mode so you keep your night vision, switches on by itself after dark
 - runs offline as a PWA, keeps the screen awake
 - metric or imperial
 - vehicle profiles for my F250 6.0 and the Tahoe 5.3
-- keyboard: 1 to 7 switch screens, Esc acks everything
+- keyboard: 1 to 7 switch screens
 - sim has scenarios (Coquihalla grade, stuck thermostat, night at camp...), time warp, and buttons to fake a gas leak, door open, motion, etc
 
 ![Drive screen](docs/img/drive.png)

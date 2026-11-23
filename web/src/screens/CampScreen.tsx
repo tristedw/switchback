@@ -71,7 +71,7 @@ export function CampScreen() {
 
   return (
     <div className="screen camp-screen">
-      <Panel title="Power" className="power">
+      <Panel primary title="Power" className="power">
         <div className="readout-grid">
           <Readout label="House bank" value={g('house.soc')} unit="%" size="lg" />
           <Readout label="Volts" value={g('house.v')} digits={2} unit="V" />

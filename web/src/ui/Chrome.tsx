@@ -1,127 +1,145 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { app } from '../core/state'
-import { useSettings, updateSettings, type ThemeMode } from '../core/settings'
-import { useAlarms, ack, snooze, ackAll } from '../core/alarms'
+import { useSettings, updateSettings } from '../core/settings'
+import { useAlarms, ack, snooze } from '../core/alarms'
 import { fmtClock } from '../core/units'
-import { Icon, Mark } from './icons'
+import { Mark } from './icons'
 import { Telltales } from './Telltales'
-import { Lcd } from './Readout'
 import { useNow } from './hooks'
 
 export type ScreenId = 'rig' | 'drive' | 'camp' | 'sky' | 'codes' | 'log' | 'setup'
 
-export const SCREENS: { id: ScreenId; label: string; icon: () => JSX.Element; key: string }[] = [
-  { id: 'rig', label: 'Rig', icon: Icon.rig, key: '1' },
-  { id: 'drive', label: 'Drive', icon: Icon.drive, key: '2' },
-  { id: 'camp', label: 'Camp', icon: Icon.camp, key: '3' },
-  { id: 'sky', label: 'Sky', icon: Icon.sky, key: '4' },
-  { id: 'codes', label: 'Codes', icon: Icon.codes, key: '5' },
-  { id: 'log', label: 'Log', icon: Icon.log, key: '6' },
-  { id: 'setup', label: 'Setup', icon: Icon.setup, key: '7' },
+export const SCREENS: { id: ScreenId; label: string; key: string }[] = [
+  { id: 'rig', label: 'Rig', key: '1' },
+  { id: 'drive', label: 'Drive', key: '2' },
+  { id: 'camp', label: 'Camp', key: '3' },
+  { id: 'sky', label: 'Sky', key: '4' },
+  { id: 'codes', label: 'Codes', key: '5' },
+  { id: 'log', label: 'Log', key: '6' },
+  { id: 'setup', label: 'Setup', key: '7' },
 ]
 
-const THEME_NEXT: Record<ThemeMode, ThemeMode> = { auto: 'dusk', dusk: 'day', day: 'night', night: 'auto' }
-const THEME_LABEL: Record<ThemeMode, string> = { auto: 'Auto', dusk: 'NeXT', day: 'System 7', night: 'Night' }
-
-export function TopBar({ onNav }: { onNav: (s: ScreenId) => void }) {
-  const st = app.use()
+// the vertical main menu, top left of the screen like every NeXT app
+export function MainMenu({ current, onNav, nightOn }: { current: string; onNav: (s: ScreenId) => void; nightOn: boolean }) {
   const s = useSettings()
-  const now = useNow(5000)
-
-  const fullscreen = () => {
-    if (document.fullscreenElement) document.exitFullscreen()
-    else document.documentElement.requestFullscreen?.().catch(() => {})
-  }
-
+  const cycleNight = () => updateSettings({ theme: s.theme === 'auto' ? 'night' : s.theme === 'night' ? 'dusk' : 'auto' })
   return (
-    <header className="topbar">
-      <div className="brand">
-        <Mark />
-        <span>Switchback</span>
-      </div>
-      <Telltales />
-      <div className="spacer" />
-      <div className="links">
-        <button className="link" onClick={() => onNav('setup')} title={st.obdDetail || 'OBD adapter'}>
-          <i className="dot" data-s={st.obd} />
-          <span>OBD</span>
-        </button>
-        <button className="link" onClick={() => onNav('setup')} title="Homebase on the camper pi">
-          <i className="dot" data-s={st.homebase} />
-          <span>Home</span>
-        </button>
-        {st.sim && (
-          <button className="link" onClick={() => onNav('setup')} title="Running on simulated data">
-            <i className="dot" data-s="sim" />
-            <span>Sim</span>
+    <nav className="mainmenu" aria-label="Main menu">
+      <div className="menu-title">Switchback</div>
+      <ul>
+        {SCREENS.map((sc) => (
+          <li key={sc.id}>
+            <button aria-current={current === sc.id ? 'page' : undefined} onClick={() => onNav(sc.id)}>
+              <span>{sc.label}</span>
+              <kbd>{sc.key}</kbd>
+            </button>
+          </li>
+        ))}
+        <li>
+          <button onClick={cycleNight} aria-pressed={nightOn}>
+            <span>Night</span>
+            <kbd>{s.theme === 'auto' ? 'auto' : s.theme === 'night' ? 'on' : 'off'}</kbd>
           </button>
-        )}
-        {st.recording && (
-          <span className="link">
-            <i className="dot" data-s="error" />
-            <span>Rec</span>
-          </span>
-        )}
-      </div>
-      <span className="clock">
-        <Lcd text={fmtClock(now)} size="sm" />
-      </span>
-      <button className="icon-btn" onClick={() => updateSettings({ theme: THEME_NEXT[s.theme] })} title="Change theme" aria-label={`Theme: ${THEME_LABEL[s.theme]}`}>
-        {THEME_LABEL[s.theme]}
-      </button>
-      <button className="icon-btn hide-sm" onClick={fullscreen} title="Fullscreen" aria-label="Toggle fullscreen">
-        <Icon.expand />
-      </button>
-    </header>
-  )
-}
-
-export function Nav({ current, onNav, badges }: { current: ScreenId; onNav: (s: ScreenId) => void; badges: Partial<Record<ScreenId, number>> }) {
-  return (
-    <nav className="nav" aria-label="Screens">
-      {SCREENS.map((sc) => (
-        <button key={sc.id} aria-current={current === sc.id ? 'page' : undefined} onClick={() => onNav(sc.id)} title={`${sc.label} (${sc.key})`}>
-          <i className="led" aria-hidden="true" />
-          <sc.icon />
-          <span>{sc.label}</span>
-          {!!badges[sc.id] && <b className="badge num">{badges[sc.id]}</b>}
-        </button>
-      ))}
+        </li>
+      </ul>
     </nav>
   )
 }
 
+const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
+
+function StatusTile({ label, state, onClick }: { label: string; state: string; onClick: () => void }) {
+  return (
+    <button className="tile" onClick={onClick} title={`${label}: ${state}`}>
+      <span className="tile-led" data-s={state} />
+      <span className="tile-label">{label}</span>
+      {/* the three dots on a docked app that isn't running */}
+      {(state === 'off' || state === 'error') && <span className="tile-dots">...</span>}
+    </button>
+  )
+}
+
+// right edge of the screen, 64px tiles
+export function Dock({ onNav }: { onNav: (s: ScreenId) => void }) {
+  const st = app.use()
+  const now = new Date(useNow(10000))
+  const fullscreen = () => {
+    if (document.fullscreenElement) document.exitFullscreen()
+    else document.documentElement.requestFullscreen?.().catch(() => {})
+  }
+  return (
+    <aside className="dock" aria-label="Dock">
+      <button className="tile app-tile" onClick={fullscreen} title="Fullscreen">
+        <Mark />
+      </button>
+      <StatusTile label="OBD" state={st.obd} onClick={() => onNav('setup')} />
+      <StatusTile label="Home" state={st.homebase} onClick={() => onNav('setup')} />
+      {st.sim && <StatusTile label="Sim" state="sim" onClick={() => onNav('setup')} />}
+      {st.recording && <StatusTile label="Rec" state="error" onClick={() => onNav('log')} />}
+      <div className="tile lights-tile">
+        <Telltales />
+      </div>
+      <div className="dock-spacer" />
+      {/* the preferences app clock tile */}
+      <div className="tile clock-tile" aria-label={`${fmtClock(now)} ${now.toDateString()}`}>
+        <span className="ct-time">{fmtClock(now)}</span>
+        <span className="ct-day">{DAYS[now.getDay()]}</span>
+        <span className="ct-date">{now.getDate()}</span>
+        <span className="ct-month">{MONTHS[now.getMonth()]}</span>
+      </div>
+    </aside>
+  )
+}
+
+// alarms come up as attention panels
 export function AlarmStack() {
   const alarms = useAlarms()
-  const [open, setOpen] = useState(true)
-  const unacked = alarms.filter((a) => !a.acked)
+  const top = alarms.filter((a) => !a.acked).sort((a, b) => rank(b.sev) - rank(a.sev) || b.since - a.since)
 
   useEffect(() => {
-    if (unacked.length) setOpen(true)
-  }, [unacked.length])
+    // return acks the front panel, same as the default button in a NeXT attention panel
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Enter' && top[0] && !(e.target instanceof HTMLInputElement)) ack(top[0].id)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [top])
 
+  const acked = alarms.filter((a) => a.acked)
   if (!alarms.length) return null
-  const list = [...alarms].sort((a, b) => rank(b.sev) - rank(a.sev) || b.since - a.since)
-  const shown = open ? list : list.slice(0, 1)
 
   return (
-    <div className="alarms" role="region" aria-label="Active alarms" aria-live="assertive">
-      {shown.map((a) => (
-        <div key={a.id} className="alarm" data-sev={a.sev} data-acked={a.acked || undefined}>
-          <div className="alarm-text">
-            <strong>{a.title}</strong>
-            <span>{a.detail}</span>
-          </div>
-          <div className="alarm-actions">
-            {!a.acked && <button onClick={() => ack(a.id)}>Acknowledge</button>}
-            <button onClick={() => snooze(a.id, 15)}>Snooze 15 min</button>
+    <div className="alarms" role="region" aria-label="Alarms" aria-live="assertive">
+      {top.map((a) => (
+        <div key={a.id} className="attention" data-sev={a.sev}>
+          <div className="att-bar" />
+          <div className="att-body">
+            <span className="att-icon" aria-hidden="true">
+              {a.sev === 'info' ? 'i' : '!'}
+            </span>
+            <div className="att-text">
+              <strong>{a.title}</strong>
+              <span>{a.detail}</span>
+            </div>
+            <div className="att-buttons">
+              <button className="btn" onClick={() => snooze(a.id, 15)}>
+                Snooze
+              </button>
+              <button className="btn primary" onClick={() => ack(a.id)}>
+                OK
+              </button>
+            </div>
           </div>
         </div>
       ))}
-      {list.length > 1 && (
-        <div className="alarm-more">
-          <button onClick={() => setOpen(!open)}>{open ? 'Show fewer' : `${list.length - 1} more`}</button>
-          {unacked.length > 1 && <button onClick={ackAll}>Acknowledge all</button>}
+      {!!acked.length && (
+        <div className="acked">
+          {acked.map((a) => (
+            <span key={a.id} data-sev={a.sev}>
+              {a.title}
+            </span>
+          ))}
         </div>
       )}
     </div>

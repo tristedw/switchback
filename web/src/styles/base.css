@@ -1,148 +1,114 @@
-@import '@fontsource/pixelify-sans/400.css';
-@import '@fontsource/pixelify-sans/600.css';
-
-/* two looks. NeXTSTEP for the dark grey default, System 7 for daytime glare.
-   night is the NeXT layout in red only so you keep your night vision */
+/* NeXTSTEP 3.3. four greys for the chrome (black, #555, #aaa, white), Helvetica everywhere,
+   1px bevels with white on the top left. the content areas are dark so the screen
+   doesn't light up the camper at night. */
 :root,
 [data-theme='dusk'] {
-  --desk: #555555;
-  --desk-dot: #555555;
-  --face: #aaaaaa;
-  --hi: #ffffff;
-  --lo: #555555;
-  --edge: #000000;
-  --canvas: #ffffff;
-  --cink: #000000;
-  --cink-2: #555555;
-  --title: #000000;
-  --title-ink: #ffffff;
-  --face-ink: #000000;
-  --face-ink-2: #333333;
-  --stamp: #555555;
-  --water: #2a5db0;
-  --waste: #555555;
-  --heat: #cc1f1f;
-  --warn: #f2c200;
-  --ok: #2a8a2a;
-  --orange: #e0702a;
-  --bevel-out: inset 1px 1px 0 var(--hi), inset -1px -1px 0 #000, inset -2px -2px 0 var(--lo);
-  --bevel-in: inset 1px 1px 0 var(--lo), inset 2px 2px 0 #000, inset -1px -1px 0 var(--hi);
-  --bevel-out-sm: inset 1px 1px 0 var(--hi), inset -1px -1px 0 var(--lo);
-  --bevel-in-sm: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi);
-  --win-shadow: none;
-  --btn-radius: 0;
-  --ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --display-weight: 700;
-  color-scheme: light;
-}
+  --workspace: #4a4e5a;
+  --black: #000000;
+  --dgray: #555555;
+  --lgray: #aaaaaa;
+  --white: #ffffff;
+  --chrome-ink: #000000;
 
-[data-theme='day'] {
-  --desk: #ffffff;
-  --desk-dot: #000000;
-  --face: #ffffff;
-  --hi: #ffffff;
-  --lo: #000000;
-  --edge: #000000;
-  --canvas: #ffffff;
-  --cink: #000000;
-  --cink-2: #444444;
-  --title: #ffffff;
-  --title-ink: #000000;
-  --face-ink: #000000;
-  --face-ink-2: #333333;
-  --stamp: #777777;
-  --water: #000000;
-  --waste: #777777;
-  --heat: #000000;
-  --warn: #000000;
-  --ok: #000000;
-  --orange: #000000;
-  --bevel-out: none;
-  --bevel-in: none;
-  --bevel-out-sm: none;
-  --bevel-in-sm: none;
-  --win-shadow: 2px 2px 0 #000;
-  --btn-radius: 7px;
-  --ui: 'Pixelify Sans', Geneva, 'Helvetica Neue', sans-serif;
-  --display: 'Pixelify Sans', Geneva, 'Helvetica Neue', sans-serif;
-  --display-weight: 600;
-  color-scheme: light;
-}
+  --content: #1b1b1d;
+  --well: #101011;
+  --text: #ececec;
+  --text-2: #a6a6a6;
+  --text-3: #6c6c6e;
+  --grid: #2e2e31;
 
-[data-theme='night'] {
-  --desk: #0a0000;
-  --desk-dot: #0a0000;
-  --face: #1c0402;
-  --hi: #5a1208;
-  --lo: #000000;
-  --edge: #000000;
-  --canvas: #000000;
-  --cink: #ff3b24;
-  --cink-2: #a8261a;
-  --title: #000000;
-  --title-ink: #ff3b24;
-  --face-ink: #ff3b24;
-  --face-ink-2: #c42d1c;
-  --stamp: #7a1c12;
-  --water: #ff3b24;
-  --waste: #7a1c12;
-  --heat: #ff6a50;
-  --warn: #ff3b24;
-  --ok: #a8261a;
-  --orange: #ff3b24;
-  --bevel-out: inset 1px 1px 0 var(--hi), inset -1px -1px 0 #000;
-  --bevel-in: inset 1px 1px 0 #000, inset -1px -1px 0 var(--hi);
-  --bevel-out-sm: inset 1px 1px 0 var(--hi), inset -1px -1px 0 #000;
-  --bevel-in-sm: inset 1px 1px 0 #000, inset -1px -1px 0 var(--hi);
-  --win-shadow: none;
-  --btn-radius: 0;
-  --ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --display-weight: 700;
+  --amber: #f2b233;
+  --red: #ef3b2d;
+  --green: #3fcf52;
+  --blue: #6f9ee0;
+  --waste: #8d8d90;
+
+  --sel: #ffffff;
+  --sel-ink: #000000;
   color-scheme: dark;
 }
 
-/* old token names still used around the components, mapped onto the new ones */
+/* night: same layout, everything red on black */
+[data-theme='night'] {
+  --workspace: #0a0100;
+  --black: #000000;
+  --dgray: #3a0b06;
+  --lgray: #5e140b;
+  --white: #a8261a;
+  --chrome-ink: #ff4a32;
+
+  --content: #050000;
+  --well: #000000;
+  --text: #ff4a32;
+  --text-2: #b8301f;
+  --text-3: #6e1b11;
+  --grid: #2a0805;
+
+  --amber: #ff4a32;
+  --red: #ff7a62;
+  --green: #b8301f;
+  --blue: #ff4a32;
+  --waste: #6e1b11;
+
+  --sel: #ff4a32;
+  --sel-ink: #000000;
+  color-scheme: dark;
+}
+
+/* names the drawing components use */
 :root,
 [data-theme] {
-  --bg: var(--desk);
-  --plate: var(--desk);
-  --panel: var(--face);
-  --panel-2: var(--face);
-  --well: var(--canvas);
-  --rule: var(--lo);
-  --ink: var(--face-ink);
-  --ink-2: var(--face-ink-2);
-  --ink-3: var(--stamp);
-  --needle: var(--heat);
-  --lcd: var(--cink);
-  --power: var(--warn);
-  --power-ink: var(--cink);
-  --amber: var(--warn);
-  --rig-line: var(--cink);
-  --rig-fill: var(--canvas);
-  --ground: var(--cink-2);
-  --moon-lit: var(--cink);
-  --moon-dark: var(--canvas);
+  --canvas: var(--well);
+  --cink: var(--text);
+  --cink-2: var(--text-2);
+  --rig-line: var(--text);
+  --rig-fill: var(--content);
+  --ground: var(--text-3);
+  --lcd: var(--text);
+  --power: var(--amber);
+  --amber-ink: var(--amber);
+  --heat: var(--red);
+  --water: var(--blue);
+  --ok: var(--green);
+  --warn: var(--amber);
+  --edge: var(--black);
+  --lo: var(--dgray);
+  --hi: var(--white);
+  --face: var(--lgray);
+  --moon-lit: var(--text);
+  --moon-dark: var(--well);
+  --ink: var(--text);
+  --ink-2: var(--text-2);
+  --ink-3: var(--text-3);
+  --panel: var(--content);
+  --panel-2: var(--grid);
+  --rule: var(--grid);
+  --stamp: var(--text-3);
+  --face-ink: var(--text);
+  --bg: var(--content);
+  --power-ink: var(--amber);
+  --pixel: var(--font);
+  --needle: var(--red);
+
+  --raised: inset 1px 1px 0 var(--white), inset -1px -1px 0 var(--black), inset -2px -2px 0 var(--dgray);
+  --bevel-out: var(--raised);
+  --pressed: inset 1px 1px 0 var(--black), inset 2px 2px 0 var(--dgray), inset -1px -1px 0 var(--white);
+  --sunk: inset 1px 1px 0 var(--dgray), inset 2px 2px 0 var(--black), inset -1px -1px 0 var(--white);
+  --bevel-in: var(--sunk);
 }
 
 :root {
-  --font: var(--ui);
-  --pixel: var(--display);
-  /* modular scale, ~1.25 */
-  --t-xs: 0.8125rem;
-  --t-sm: 0.9375rem;
-  --t-md: 1.125rem;
-  --t-lg: 1.4375rem;
-  --t-xl: 2rem;
-  --t-2xl: 3rem;
-  --t-3xl: 4.5rem;
-  --gap: 12px;
-  --pad: 16px;
-  --radius: 0;
-  --nav-h: 64px;
-  --top-h: 52px;
+  --font: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --t-xs: 12px;
+  --t-sm: 13px;
+  --t-md: 15px;
+  --t-lg: 20px;
+  --t-xl: 28px;
+  --t-2xl: 40px;
+  --t-3xl: 60px;
+  --gap: 10px;
+  --menu-w: 150px;
+  --dock-w: 68px;
 }
 
 * {
@@ -157,15 +123,14 @@ body,
 }
 
 body {
-  background-color: var(--desk);
-  color: var(--ink);
+  background: var(--workspace);
+  color: var(--text);
   font-family: var(--font);
   font-size: var(--t-sm);
-  line-height: 1.45;
+  line-height: 1.35;
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
-  transition: background-color 0.6s, color 0.6s;
 }
 
 button,
@@ -180,40 +145,24 @@ button {
 }
 
 :focus-visible {
-  outline: 1px dotted var(--face-ink);
-  outline-offset: -5px;
+  outline: 1px dashed currentColor;
+  outline-offset: -4px;
 }
 
 .num {
   font-variant-numeric: tabular-nums;
-  font-feature-settings: 'tnum';
-}
-
-.muted {
-  color: var(--ink-2);
-}
-
-.faint {
-  color: var(--ink-3);
 }
 
 h1,
 h2,
 h3 {
   margin: 0;
-  font-weight: 700;
   line-height: 1.15;
-}
-
-h2 {
-  font-family: var(--pixel);
-  font-size: var(--t-sm);
-  font-weight: 600;
 }
 
 h3 {
   font-size: var(--t-sm);
-  font-weight: 650;
+  font-weight: 700;
 }
 
 p {
@@ -227,10 +176,4 @@ p {
     animation: none !important;
     transition: none !important;
   }
-}
-
-/* system 7 desktop is the 50% grey dither */
-[data-theme='day'] body {
-  background-image: conic-gradient(#000 25%, #fff 0 50%, #000 0 75%, #fff 0);
-  background-size: 2px 2px;
 }

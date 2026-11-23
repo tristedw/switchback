@@ -95,7 +95,7 @@ export function CodesScreen({ go }: { go: (s: ScreenId) => void }) {
 
   return (
     <div className="screen codes-screen">
-      <Panel title="Check engine">
+      <Panel primary title="Check engine">
         <div className="mil" data-on={mil === 1 || undefined}>
           <svg viewBox="0 0 48 32" aria-hidden="true">
             <path d="M8 10h6l2-4h10l2 4h6v4h4v-4h4v14h-4v-4h-4v6H14l-3-5H8v4H4V10z" fill="currentColor" />

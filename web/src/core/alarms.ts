@@ -3,7 +3,7 @@ import { tel } from './store'
 import { getSettings, profile, type Settings } from './settings'
 import { logEvent, type Severity } from './events'
 import { app } from './state'
-import { chime, klaxon, say } from './audio'
+import { beep, doubleBeep } from './audio'
 import { temp, tempUnit } from './units'
 import { currentLevel } from './level'
 
@@ -22,7 +22,6 @@ export interface Rule {
   check: (c: Ctx) => Severity | null
   detail: (c: Ctx) => string
   holdMs?: number // has to stay tripped this long before it fires
-  speak?: (c: Ctx) => string
 }
 
 export interface ActiveAlarm {
@@ -64,7 +63,6 @@ export const RULES: Rule[] = [
       return null
     },
     detail: (c) => `Coolant ${T(c, c.g('ect'))}`,
-    speak: (c) => `Coolant at ${T(c, c.g('ect')).replace('°', ' degrees ')}`,
   },
   {
     id: 'oil-delta',
@@ -142,7 +140,6 @@ export const RULES: Rule[] = [
       return v !== undefined && v >= s.thresholds.gasCrit ? 'crit' : null
     },
     detail: (c) => `Gas sensor ${Math.round(c.g('gas', 30000) ?? 0)}%`,
-    speak: () => 'Propane detected',
   },
   {
     id: 'black',
@@ -182,7 +179,6 @@ export const RULES: Rule[] = [
       return g('door.camper', 10000) === 1 || g('pir', 10000) === 1 ? 'crit' : null
     },
     detail: (c) => (c.g('door.camper', 10000) === 1 ? 'Door opened' : 'Motion'),
-    speak: () => 'Camp guard tripped',
   },
   {
     id: 'level',
@@ -220,7 +216,7 @@ const pending = new Map<string, number>() // rule id -> first tripped
 let active: ActiveAlarm[] = []
 const snoozed = new Map<string, number>() // rule id -> until
 const subs = new Set<() => void>()
-let lastKlaxon = 0
+let lastBeep = 0
 
 function emit() {
   subs.forEach((f) => f())
@@ -276,11 +272,11 @@ export function evaluate(now = Date.now()) {
     }
   }
 
-  // crit alarms keep nagging until acked
+  // an unacked critical gets a reminder blip every couple of minutes, nothing more
   const loud = active.find((a) => a.sev === 'crit' && !a.acked && !isSnoozed(a.id, now))
-  if (loud && s.sound && now - lastKlaxon > 6000) {
-    lastKlaxon = now
-    klaxon()
+  if (loud && s.sound && now - lastBeep > 120000) {
+    lastBeep = now
+    doubleBeep()
   }
 
   if (changed) emit()
@@ -294,14 +290,11 @@ function isSnoozed(id: string, now = Date.now()) {
 
 function announce(rule: Rule, ctx: Ctx, sev: Severity) {
   if (isSnoozed(rule.id)) return
-  const s = ctx.s
-  if (s.sound) {
-    if (sev === 'crit') {
-      lastKlaxon = Date.now()
-      klaxon()
-    } else if (sev === 'warn') chime()
-  }
-  if (s.voice && sev !== 'info') say(rule.speak ? rule.speak(ctx) : rule.title)
+  if (!ctx.s.sound || sev === 'info') return
+  if (sev === 'crit') {
+    lastBeep = Date.now()
+    doubleBeep()
+  } else beep()
 }
 
 export function ack(id: string) {

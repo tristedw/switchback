@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { fmt } from '../core/units'
 
-// numbers sit in a sunken white field like an old text box
+// a value with its unit, no label. used where the number is the whole point
 export function Lcd({ text, size = 'md', state, unit }: { text: string; size?: 'sm' | 'md' | 'lg' | 'xl'; state?: 'warn' | 'crit'; unit?: string }) {
   return (
     <span className="lcd" data-size={size} data-state={state}>
@@ -74,16 +74,4 @@ export function Meter({ label, pct, color = 'var(--water)', right, invert, warnA
   )
 }
 
-export function Panel({ title, aside, children, className = '', span }: { title?: ReactNode; aside?: ReactNode; children: ReactNode; className?: string; span?: number }) {
-  return (
-    <section className={`panel ${className}`} style={span ? { gridColumn: `span ${span}` } : undefined}>
-      {(title || aside) && (
-        <header className="panel-head">
-          {title && <h2>{title}</h2>}
-          {aside && <div className="panel-aside">{aside}</div>}
-        </header>
-      )}
-      {children}
-    </section>
-  )
-}
+export { Panel } from './Window'

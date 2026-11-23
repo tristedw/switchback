@@ -55,7 +55,8 @@ export function DriveScreen() {
 
   return (
     <div className="screen drive-screen">
-      <div className="gauges raised">
+      <Panel primary title="Gauges" className="gauges-win">
+      <div className="gauges">
         <Gauge
           value={rpm}
           min={0}
@@ -85,6 +86,7 @@ export function DriveScreen() {
           size={260}
         />
       </div>
+      </Panel>
 
       <div className="drive-grid">
         <Panel title="Engine" className="readouts">

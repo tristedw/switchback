@@ -116,7 +116,7 @@ export function SkyScreen() {
 
   return (
     <div className="screen sky-screen">
-      <Panel title="Sun today" className="sun" aside={<button className="text-btn" onClick={locate}>{locMsg || `${s.lat.toFixed(2)}, ${s.lon.toFixed(2)}`}</button>}>
+      <Panel primary title="Sun today" className="sun" aside={<button className="text-btn" onClick={locate}>{locMsg || `${s.lat.toFixed(2)}, ${s.lon.toFixed(2)}`}</button>}>
         <SunArc now={now} lat={s.lat} lon={s.lon} />
         <dl className="stats cols">
           <dt>First light</dt>

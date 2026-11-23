@@ -1,7 +1,8 @@
 import { useSyncExternalStore } from 'react'
 
 export type Units = 'metric' | 'imperial'
-export type ThemeMode = 'auto' | 'day' | 'dusk' | 'night'
+// dusk is the normal next look, night is the red only version for after dark
+export type ThemeMode = 'auto' | 'dusk' | 'night'
 
 export interface VehicleProfile {
   id: string
@@ -44,7 +45,6 @@ export interface Settings {
   pollMs: number
   lat: number
   lon: number
-  voice: boolean
   sound: boolean
   quietStart: number // hour
   quietEnd: number
@@ -62,13 +62,12 @@ export interface Settings {
 
 const DEFAULTS: Settings = {
   units: 'metric',
-  theme: 'dusk',
+  theme: 'auto',
   profileId: 'f250-60',
   homebaseUrl: '',
   pollMs: 0,
   lat: 49.888, // kelowna
   lon: -119.496,
-  voice: true,
   sound: true,
   quietStart: 22,
   quietEnd: 7,
@@ -104,7 +103,9 @@ function load(): Settings {
     const raw = localStorage.getItem(KEY)
     if (!raw) return structuredClone(DEFAULTS)
     const parsed = JSON.parse(raw)
-    return { ...DEFAULTS, ...parsed, thresholds: { ...DEFAULTS.thresholds, ...parsed.thresholds } }
+    const merged = { ...DEFAULTS, ...parsed, thresholds: { ...DEFAULTS.thresholds, ...parsed.thresholds } }
+    if (!['auto', 'dusk', 'night'].includes(merged.theme)) merged.theme = 'auto'
+    return merged
   } catch {
     return structuredClone(DEFAULTS)
   }

@@ -29,33 +29,12 @@ function tone(freq: number, start: number, dur: number, gain = 0.18, type: Oscil
   osc.stop(ctx.currentTime + start + dur + 0.02)
 }
 
-export function chime() {
-  tone(880, 0, 0.12, 0.12, 'sine')
-  tone(1320, 0.14, 0.18, 0.1, 'sine')
+// one soft blip for warnings, two for critical. that's it
+export function beep() {
+  tone(1320, 0, 0.07, 0.06, 'sine')
 }
 
-// two tone like a smoke alarm but less awful
-export function klaxon() {
-  for (let i = 0; i < 3; i++) {
-    tone(960, i * 0.36, 0.16)
-    tone(720, i * 0.36 + 0.18, 0.16)
-  }
-}
-
-export function tick() {
-  tone(2400, 0, 0.02, 0.05, 'square')
-}
-
-let lastSpoken = ''
-let lastSpokenAt = 0
-
-export function say(text: string) {
-  if (typeof speechSynthesis === 'undefined') return
-  // don't repeat the same thing over and over
-  if (text === lastSpoken && Date.now() - lastSpokenAt < 60000) return
-  lastSpoken = text
-  lastSpokenAt = Date.now()
-  const u = new SpeechSynthesisUtterance(text)
-  u.rate = 1.05
-  speechSynthesis.speak(u)
+export function doubleBeep() {
+  tone(1320, 0, 0.07, 0.07, 'sine')
+  tone(1320, 0.14, 0.07, 0.07, 'sine')
 }

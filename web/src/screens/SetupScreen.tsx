@@ -6,7 +6,7 @@ import { BleTransport, SerialTransport, bleSupported, serialSupported } from '..
 import { connectObd, disconnectObd, obdConsole } from '../obd/session'
 import { connectHomebase, disconnectHomebase, homebaseUrl } from '../sources/homebase'
 import { startSim, stopSim, setScenario, SCENARIOS } from '../sources/sim'
-import { klaxon, chime, say, unlockAudio } from '../core/audio'
+import { beep, doubleBeep, unlockAudio } from '../core/audio'
 import { tempUnit } from '../core/units'
 
 function Num({ label, value, onChange, unit, step = 1, min, max }: { label: string; value: number; onChange: (v: number) => void; unit?: string; step?: number; min?: number; max?: number }) {
@@ -79,7 +79,7 @@ export function SetupScreen() {
 
   return (
     <div className="screen setup-screen">
-      <Panel title="OBD adapter" aside={<span className="faint">{st.obd === 'live' ? `${con.hz.toFixed(1)} readings a second` : st.obd}</span>}>
+      <Panel primary title="OBD adapter" aside={<span className="faint">{st.obd === 'live' ? `${con.hz.toFixed(1)} readings a second` : st.obd}</span>}>
         {st.obd === 'live' && <p className="muted small">{st.obdDetail}</p>}
         <div className="btn-row wrap">
           {st.obd === 'live' || st.obd === 'connecting' ? (
@@ -218,16 +218,12 @@ export function SetupScreen() {
           <Num label="Quiet hours end" value={s.quietEnd} unit="h" min={0} max={23} onChange={(v) => updateSettings({ quietEnd: v })} />
         </div>
         <Toggle label="Alarm sounds" on={s.sound} onChange={(v) => updateSettings({ sound: v })} />
-        <Toggle label="Spoken alerts" on={s.voice} onChange={(v) => updateSettings({ voice: v })} />
         <div className="btn-row wrap">
-          <button className="btn" onClick={() => (unlockAudio(), chime())}>
-            Test chime
+          <button className="btn" onClick={() => (unlockAudio(), beep())}>
+            Test warning
           </button>
-          <button className="btn" onClick={() => (unlockAudio(), klaxon())}>
-            Test alarm
-          </button>
-          <button className="btn" onClick={() => say('Coolant at 106 degrees')}>
-            Test voice
+          <button className="btn" onClick={() => (unlockAudio(), doubleBeep())}>
+            Test critical
           </button>
         </div>
       </Panel>

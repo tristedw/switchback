@@ -1,97 +1,267 @@
-/* bevels: black edge, light top left, dark bottom right. values come from the theme */
-.raised {
-  background: var(--face);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-}
-
-.sunken {
-  background: var(--canvas);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
-}
-
-.shell {
+/* workspace: main menu pinned top left, windows in the middle, dock down the right edge */
+.workspace {
   display: grid;
-  grid-template-rows: var(--top-h) 1fr var(--nav-h);
+  grid-template-columns: var(--menu-w) minmax(0, 1fr) var(--dock-w);
   height: 100%;
   height: 100dvh;
 }
 
-/* ---- top bar ---- */
-.topbar {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 0 8px 0 12px;
-  background: var(--face);
-  border-bottom: 1px solid var(--edge);
-  box-shadow: inset 0 2px 0 var(--hi), inset 0 -2px 0 var(--lo);
-  color: var(--face-ink);
+/* ---- main menu ---- */
+.mainmenu {
+  align-self: start;
+  margin: 8px 0 0 8px;
+  width: calc(var(--menu-w) - 8px);
+  background: var(--lgray);
+  border: 1px solid var(--black);
+  color: var(--chrome-ink);
+  position: relative;
+  z-index: 2;
 }
 
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--pixel);
-  font-weight: 600;
-  font-size: var(--t-md);
+.menu-title {
+  height: 22px;
+  line-height: 22px;
+  text-align: center;
+  background: var(--black);
+  color: var(--white);
+  font-weight: 700;
+  font-size: var(--t-sm);
 }
 
-.brand svg {
-  width: 26px;
-  height: 18px;
+[data-theme='night'] .menu-title {
+  color: var(--chrome-ink);
 }
 
-.telltales {
+.mainmenu ul {
   list-style: none;
-  margin: 0 0 0 6px;
-  padding: 4px 6px;
-  display: flex;
-  gap: 2px;
-  background: var(--canvas);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
+  margin: 0;
+  padding: 0;
 }
 
-.telltales li {
-  width: 26px;
-  height: 24px;
+.mainmenu button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 30px;
+  padding: 0 8px;
+  border: 0;
+  background: var(--lgray);
+  box-shadow: var(--raised);
+  color: var(--chrome-ink);
+  font-size: var(--t-sm);
+  text-align: left;
+}
+
+.mainmenu kbd {
+  font: inherit;
+  font-size: var(--t-xs);
+  color: var(--dgray);
+}
+
+[data-theme='night'] .mainmenu kbd {
+  color: var(--text-2);
+}
+
+/* highlighted menu cell is white, the way NeXT draws it */
+.mainmenu button[aria-current='page'],
+.mainmenu button:active {
+  background: var(--sel);
+  color: var(--sel-ink);
+  box-shadow: inset -1px -1px 0 var(--black);
+}
+
+.mainmenu button[aria-current='page'] kbd {
+  color: var(--sel-ink);
+}
+
+/* ---- desk ---- */
+/* scroller goes on the left like NeXT. rtl on the container, ltr back on the content */
+.desk {
+  overflow-y: auto;
+  overflow-x: hidden;
+  direction: rtl;
+}
+
+.desk-inner {
+  direction: ltr;
+  padding: 8px 10px 16px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.desk::-webkit-scrollbar {
+  width: 18px;
+}
+
+.desk::-webkit-scrollbar-track {
+  background: var(--dgray);
+  border-right: 1px solid var(--black);
+}
+
+.desk::-webkit-scrollbar-thumb {
+  background-color: var(--lgray);
+  box-shadow: var(--raised);
+  border: 1px solid var(--black);
+  /* the dimple in the middle of the knob */
+  background-image: radial-gradient(circle at 50% 50%, var(--dgray) 0 2.5px, var(--white) 3px 3.5px, transparent 4px);
+}
+
+.screen {
+  display: grid;
+  gap: var(--gap);
+  align-content: start;
+  max-width: 1500px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ---- dock ---- */
+.dock {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.tile {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  position: relative;
   display: grid;
   place-items: center;
-  color: var(--cink-2);
-  opacity: 0.35;
+  padding: 0;
+  background: #6b6b6e;
+  border: 1px solid var(--black);
+  box-shadow: inset 1px 1px 0 #9a9a9e, inset -1px -1px 0 #38383b;
+  color: var(--white);
 }
 
-.telltales svg {
-  width: 18px;
-  height: 18px;
+[data-theme='night'] .tile {
+  background: var(--dgray);
+  box-shadow: inset 1px 1px 0 var(--lgray), inset -1px -1px 0 #000;
+  color: var(--chrome-ink);
 }
 
-.telltales li[data-light] {
-  opacity: 1;
+.tile + .tile {
+  margin-top: -1px;
 }
 
-.telltales li[data-light='amber'] {
-  background: var(--warn);
-  color: #000;
+.app-tile svg {
+  width: 40px;
+  height: 28px;
 }
 
-.telltales li[data-light='red'] {
-  background: var(--heat);
-  color: #fff;
-  animation: blink 0.9s steps(2) infinite;
+.tile-led {
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--black);
+  background: #3a3a3d;
+  margin-top: 6px;
 }
 
-.telltales li[data-light='green'] {
-  background: var(--ok);
-  color: #000;
+.tile-led[data-s='live'] {
+  background: var(--green);
+}
+.tile-led[data-s='sim'],
+.tile-led[data-s='connecting'] {
+  background: var(--amber);
+}
+.tile-led[data-s='connecting'] {
+  animation: blink 1s steps(2) infinite;
+}
+.tile-led[data-s='error'] {
+  background: var(--red);
+}
+
+.tile-label {
+  font-size: 11px;
+  font-weight: 700;
+  margin-top: -14px;
+}
+
+.tile-dots {
+  position: absolute;
+  left: 5px;
+  bottom: 1px;
+  font-size: 12px;
+  line-height: 1;
+  letter-spacing: 1px;
+}
+
+.lights-tile {
+  height: auto;
+  padding: 4px 0;
+}
+
+.dock-spacer {
+  flex: 1;
+}
+
+/* preferences clock tile: digital time over a little calendar page */
+.clock-tile {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  justify-items: center;
+  padding: 5px 7px 6px;
+  gap: 0;
+}
+
+.ct-time {
+  width: 100%;
+  background: var(--black);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+[data-theme='night'] .ct-time {
+  color: var(--chrome-ink);
+}
+
+.ct-day,
+.ct-date,
+.ct-month {
+  width: 100%;
+  background: var(--white);
+  color: var(--black);
+  text-align: center;
+}
+
+[data-theme='night'] :is(.ct-day, .ct-date, .ct-month) {
+  background: var(--dgray);
+  color: var(--chrome-ink);
+}
+
+.ct-day {
+  font-size: 8px;
+  font-weight: 700;
+  color: var(--red);
+  padding-top: 1px;
+}
+
+.ct-date {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 18px;
+}
+
+.ct-month {
+  font-size: 8px;
+  font-weight: 700;
+  padding-bottom: 1px;
 }
 
 @keyframes blink {
   50% {
-    opacity: 0.25;
+    opacity: 0.3;
   }
 }
 
@@ -104,201 +274,56 @@
   white-space: nowrap;
 }
 
-.links {
-  display: flex;
-  gap: 10px;
-}
-
-.link {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--pixel);
-  font-size: var(--t-xs);
-  color: var(--face-ink);
-  background: none;
-  border: 0;
-  padding: 4px 0;
-}
-
-.dot {
-  width: 8px;
-  height: 8px;
-  background: var(--stamp);
-  border: 1px solid var(--edge);
-  flex: none;
-}
-
-.dot[data-s='live'] {
-  background: var(--ok);
-}
-.dot[data-s='sim'],
-.dot[data-s='connecting'] {
-  background: var(--warn);
-}
-.dot[data-s='connecting'] {
-  animation: blink 1s steps(2) infinite;
-}
-.dot[data-s='error'] {
-  background: var(--heat);
-}
-
-.topbar .spacer {
-  flex: 1;
-}
-
-.clock {
-  display: flex;
-}
-
-.icon-btn {
-  min-width: 34px;
-  height: 30px;
-  padding: 0 10px;
-  display: grid;
-  place-items: center;
-  background: var(--face);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-  color: var(--face-ink);
-  font-family: var(--pixel);
-  font-size: var(--t-xs);
-}
-
-.icon-btn:active {
-  box-shadow: var(--bevel-in);
-}
-
-.icon-btn svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* ---- main ---- */
-.main {
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding: var(--pad);
-  position: relative;
-}
-
-.screen {
-  display: grid;
-  gap: var(--gap);
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-/* ---- bottom taskbar ---- */
-.nav {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: 1fr;
-  gap: 4px;
-  padding: 5px 6px;
-  background: var(--face);
-  border-top: 1px solid var(--edge);
-  box-shadow: inset 0 2px 0 var(--hi);
-}
-
-.nav button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  background: var(--face);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-  color: var(--face-ink);
-  font-family: var(--pixel);
-  font-size: var(--t-sm);
-  position: relative;
-}
-
-.nav button svg {
-  width: 20px;
-  height: 20px;
-}
-
-/* active screen is the pushed in button, like a taskbar */
-.nav button[aria-current='page'] {
-  box-shadow: var(--bevel-in);
-  background-image: radial-gradient(var(--hi) 0.5px, transparent 0.6px);
-  background-size: 2px 2px;
-  font-weight: 600;
-}
-
-.nav .led {
-  display: none;
-}
-
-.nav .badge {
-  position: absolute;
-  top: 4px;
-  right: 6px;
-  min-width: 16px;
-  height: 16px;
-  padding: 0 4px;
-  background: var(--heat);
-  color: #fff;
-  border: 1px solid var(--edge);
-  font-size: 11px;
-  line-height: 14px;
-  font-weight: 600;
-}
-
-@media (max-width: 1100px) {
-  .links .link span {
+/* ---- small screens: menu across the top, dock across the bottom ---- */
+@media (max-width: 820px) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+  }
+  .mainmenu {
+    margin: 0;
+    width: 100%;
+    border-width: 0 0 1px;
+    display: flex;
+  }
+  .menu-title {
     display: none;
   }
-}
-
-@media (max-width: 860px) {
-  .telltales {
+  .mainmenu ul {
+    display: flex;
+    overflow-x: auto;
+    width: 100%;
+  }
+  .mainmenu li {
+    flex: 1 0 auto;
+  }
+  .mainmenu button {
+    justify-content: center;
+    min-height: 40px;
+    padding: 0 12px;
+  }
+  .mainmenu kbd {
     display: none;
   }
-}
-
-@media (max-width: 720px) {
-  :root {
-    --pad: 8px;
-    --top-h: 46px;
+  .dock {
+    flex-direction: row;
+    align-items: stretch;
+    overflow-x: auto;
   }
-  .nav {
-    gap: 2px;
-    padding: 4px;
+  .tile {
+    width: 56px;
+    height: 56px;
   }
-  .nav button {
-    flex-direction: column;
-    gap: 2px;
+  .tile + .tile {
+    margin-top: 0;
+    margin-left: -1px;
   }
-  .nav button span {
-    font-size: 11px;
+  .lights-tile {
+    width: auto;
+    height: 56px;
+    padding: 0 6px;
   }
-}
-
-@media (max-width: 420px) {
-  .brand span {
+  .dock-spacer {
     display: none;
   }
-}
-
-[data-theme='day'] .topbar {
-  box-shadow: none;
-  border-bottom: 1px solid #000;
-}
-
-[data-theme='day'] .nav {
-  box-shadow: none;
-  border-top: 1px solid #000;
-}
-
-[data-theme='day'] .nav button[aria-current='page'] {
-  background: #000;
-  color: #fff;
-}
-
-[data-theme='day'] .telltales li[data-light] {
-  background: #000;
-  color: #fff;
 }

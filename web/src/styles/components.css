@@ -1,232 +1,322 @@
 /* ---- windows ---- */
-.panel {
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-  padding: 4px 4px 14px;
+.win {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   min-width: 0;
+  border: 1px solid var(--black);
+  background: var(--content);
 }
 
-.panel > :not(.panel-head) {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-
-.panel > svg,
-.panel > .spark {
-  width: calc(100% - 20px);
-}
-
-.panel-head {
+.titlebar {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: 22px 1fr minmax(22px, auto);
   align-items: center;
-  gap: 12px;
-  min-height: 24px;
-  padding: 2px 4px;
-  background: var(--title);
-  color: var(--title-ink);
+  height: 22px;
+  padding: 0 3px;
+  background: var(--lgray);
+  color: var(--chrome-ink);
+  box-shadow: inset 1px 1px 0 var(--white), inset -1px -1px 0 var(--dgray);
+  border-bottom: 1px solid var(--black);
+  user-select: none;
 }
 
-/* titles are centred on both systems */
-.panel-head h2 {
-  grid-column: 2;
-  color: var(--title-ink);
-  font-size: 14px;
+.titlebar h2 {
+  font-size: var(--t-sm);
+  font-weight: 700;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* key window */
+.win[data-key] .titlebar {
+  background: var(--black);
+  color: var(--white);
+  box-shadow: none;
+}
+
+[data-theme='night'] .win[data-key] .titlebar {
+  color: var(--chrome-ink);
+}
+
+.tb-btn {
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  background: var(--lgray);
+  border: 0;
+  box-shadow: var(--raised);
+  color: var(--black);
+}
+
+.tb-btn:active {
+  box-shadow: var(--pressed);
+}
+
+.tb-btn svg {
+  width: 11px;
+  height: 11px;
+}
+
+.tb-aside {
+  justify-self: end;
+  display: flex;
+  gap: 3px;
+  align-items: center;
+}
+
+/* small title bar buttons for window actions */
+.tb-aside .text-btn,
+.tb-aside > span:not(.btn-row) {
+  height: 16px;
+  padding: 0 6px;
+  font-size: 11px;
+  line-height: 16px;
+  text-decoration: none;
   white-space: nowrap;
 }
 
-.panel-head .panel-aside {
-  grid-column: 3;
-  justify-self: end;
+.tb-aside .text-btn {
+  background: var(--lgray);
+  color: var(--black);
+  box-shadow: var(--raised);
+  border: 0;
 }
 
-.panel-aside {
-  display: flex;
-  gap: 4px;
+.tb-aside .text-btn:active {
+  box-shadow: var(--pressed);
 }
 
-/* aside buttons sit in the title bar like the little window buttons */
-.panel-aside .text-btn {
-  min-height: 22px;
-  padding: 0 8px;
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out-sm);
-  text-decoration: none;
-  font-family: var(--pixel);
-  font-size: 13px;
+.tb-aside > span:not(.btn-row) {
+  color: inherit;
+  opacity: 0.75;
 }
 
-.panel-aside .text-btn:active {
-  box-shadow: var(--bevel-in-sm);
+.tb-aside .btn-row {
+  gap: 3px;
 }
 
-/* ---- readout wells ---- */
-.lcd {
-  display: inline-flex;
-  align-items: baseline;
+.tb-aside .toggle {
+  min-height: 16px;
+  font-size: 11px;
   gap: 5px;
-  background: var(--canvas);
-  color: var(--cink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
-  padding: 5px 10px 4px;
-  line-height: 1;
-  max-width: 100%;
 }
 
-.lcd-digits {
-  font-family: var(--pixel);
-  font-weight: var(--display-weight);
-  font-size: 26px;
-  font-variant-numeric: tabular-nums;
-  white-space: pre;
+.win-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  min-width: 0;
 }
 
-.lcd-unit {
-  font-family: var(--pixel);
-  font-size: 13px;
-  color: var(--cink-2);
+/* resize bar, grooves near each corner */
+.resizebar {
+  height: 9px;
+  position: relative;
+  background: var(--lgray);
+  border-top: 1px solid var(--black);
+  box-shadow: inset 1px 1px 0 var(--white), inset -1px -1px 0 var(--dgray);
 }
 
-.lcd[data-size='sm'] .lcd-digits {
-  font-size: 19px;
+.resizebar i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  border-left: 1px solid var(--dgray);
+  border-right: 1px solid var(--white);
 }
 
-.lcd[data-size='lg'] .lcd-digits {
-  font-size: 36px;
+.resizebar i:nth-child(1) {
+  left: 26px;
+}
+.resizebar i:nth-child(2) {
+  right: 26px;
+}
+.resizebar i:nth-child(3) {
+  display: none;
 }
 
-.lcd[data-size='xl'] .lcd-digits {
-  font-size: 60px;
+/* ---- miniwindows ---- */
+.minitray {
+  display: flex;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: 14px;
 }
 
-.lcd[data-size='lg'] .lcd-unit,
-.lcd[data-size='xl'] .lcd-unit {
-  font-size: 16px;
+.miniwin {
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  display: grid;
+  grid-template-rows: 13px 1fr;
+  background: #6b6b6e;
+  border: 1px solid var(--black);
+  box-shadow: inset 1px 1px 0 #9a9a9e, inset -1px -1px 0 #38383b;
+  color: var(--white);
 }
 
-.lcd[data-state='warn'] {
-  background: var(--warn);
-  color: #000;
+.miniwin-title {
+  background: var(--black);
+  color: var(--white);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 13px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  padding: 0 2px;
 }
 
-.lcd[data-state='warn'] .lcd-unit {
-  color: #000;
+.miniwin-icon {
+  display: grid;
+  place-items: center;
 }
 
-.lcd[data-state='crit'] {
-  background: var(--heat);
-  color: #fff;
+.miniwin-icon svg {
+  width: 34px;
+  height: 24px;
+  color: var(--amber);
 }
 
-.lcd[data-state='crit'] .lcd-unit {
-  color: #fff;
-}
-
-.lcd-text {
-  font-family: var(--pixel);
-  font-weight: 600;
-  font-size: 22px;
-  align-items: center;
-  min-height: 40px;
-}
-
-.lcd-text[data-size='lg'] {
-  font-size: 32px;
-  min-height: 54px;
-}
-
+/* ---- readouts ---- */
 .readout {
   display: grid;
-  gap: 5px;
+  gap: 2px;
   justify-items: start;
   min-width: 0;
 }
 
 .readout-label {
+  order: -1;
   font-size: var(--t-xs);
-  color: var(--face-ink);
-  font-weight: 500;
+  color: var(--text-2);
 }
 
 .readout-sub {
   display: block;
-  color: var(--face-ink-2);
+  color: var(--text-3);
+}
+
+.lcd {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  color: var(--text);
+  line-height: 1.05;
+  max-width: 100%;
+}
+
+.lcd-digits {
+  font-weight: 700;
+  font-size: var(--t-xl);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.lcd-unit {
+  font-size: var(--t-sm);
+  color: var(--text-2);
+}
+
+.lcd[data-size='sm'] .lcd-digits {
+  font-size: var(--t-lg);
+}
+
+.lcd[data-size='lg'] .lcd-digits {
+  font-size: var(--t-2xl);
+}
+
+.lcd[data-size='xl'] .lcd-digits {
+  font-size: var(--t-3xl);
+  letter-spacing: -0.03em;
+}
+
+.lcd[data-state='warn'],
+.lcd[data-state='warn'] .lcd-unit {
+  color: var(--amber);
+}
+
+.lcd[data-state='crit'],
+.lcd[data-state='crit'] .lcd-unit {
+  color: var(--red);
+}
+
+.lcd-text {
+  font-weight: 700;
+  font-size: var(--t-xl);
+}
+
+.lcd-text[data-size='lg'] {
+  font-size: var(--t-2xl);
 }
 
 .readout-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 14px 16px;
 }
 
 .readout-grid.two {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.panel > .lcd {
-  align-self: flex-start;
-}
-
-/* ---- block meters, chunked like an old copy progress bar ---- */
+/* ---- tank meters ---- */
 .ladder {
   display: grid;
-  grid-template-columns: 64px 1fr auto;
+  grid-template-columns: 62px 1fr auto;
   align-items: center;
   gap: 10px;
-  font-size: var(--t-xs);
+  font-size: var(--t-sm);
 }
 
 .ladder-label {
-  font-weight: 500;
+  color: var(--text-2);
 }
 
 .ladder-leds {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: 1fr;
-  gap: 2px;
-  padding: 4px;
-  background: var(--canvas);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
+  gap: 1px;
+  padding: 2px;
+  background: var(--well);
+  border: 1px solid var(--black);
+  box-shadow: inset 1px 1px 0 var(--black), inset -1px -1px 0 var(--grid);
 }
 
 .ladder-leds i {
-  height: 12px;
+  height: 10px;
 }
 
 .ladder-leds i:not([data-on]) {
-  background: transparent;
+  background: var(--grid);
 }
 
 .ladder-val {
-  font-family: var(--pixel);
-  font-size: var(--t-sm);
+  font-weight: 700;
   text-align: right;
-  min-width: 96px;
+  min-width: 92px;
+  font-variant-numeric: tabular-nums;
 }
 
 .ladder[data-bad] .ladder-val {
-  background: var(--heat);
-  color: #fff;
-  padding: 0 4px;
+  color: var(--red);
 }
 
 /* ---- sparks ---- */
 .spark {
   display: block;
   width: 100%;
-  background: var(--canvas);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
+  background: var(--well);
+  border: 1px solid var(--black);
 }
 
 .spark-row {
@@ -235,13 +325,13 @@
   gap: 10px;
 }
 
-/* ---- gauge ---- */
+/* ---- gauges ---- */
 .gauge {
   margin: 0;
   width: 100%;
   display: grid;
   justify-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .gauge svg {
@@ -249,35 +339,32 @@
 }
 
 .gauge figcaption {
-  font-family: var(--pixel);
   font-size: var(--t-sm);
-  color: var(--face-ink);
+  font-weight: 700;
+  color: var(--text-2);
 }
 
 .gauge-tick {
-  font-family: var(--pixel);
-  font-size: 14px;
-  font-weight: 600;
-  fill: var(--cink);
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--text);
 }
 
 .gauge-legend {
-  font-family: var(--pixel);
-  font-size: 9px;
-  fill: var(--cink-2);
+  font-size: 8.5px;
+  fill: var(--text-2);
 }
 
 .gauge-value {
-  font-family: var(--pixel);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 24px;
-  fill: var(--cink);
+  fill: var(--text);
+  font-variant-numeric: tabular-nums;
 }
 
 .gauge-unit {
-  font-family: var(--pixel);
   font-size: 10px;
-  fill: var(--cink-2);
+  fill: var(--text-2);
 }
 
 .gauge .needle {
@@ -286,7 +373,7 @@
 }
 
 .gauge[data-state='crit'] .gauge-value {
-  fill: var(--heat);
+  fill: var(--red);
 }
 
 .gauge[data-shift] svg {
@@ -295,62 +382,59 @@
 
 @keyframes shift {
   50% {
-    filter: invert(1);
+    filter: brightness(1.8);
   }
 }
 
 /* ---- buttons ---- */
 .btn {
-  min-height: 40px;
-  padding: 0 18px;
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-  font-family: var(--pixel);
+  min-height: 30px;
+  padding: 0 16px;
+  background: var(--lgray);
+  color: var(--black);
+  border: 0;
+  box-shadow: var(--raised);
   font-size: var(--t-sm);
 }
 
+[data-theme='night'] .btn {
+  color: var(--chrome-ink);
+}
+
 .btn:active:not(:disabled) {
-  box-shadow: var(--bevel-in);
-  padding-top: 2px;
+  box-shadow: var(--pressed);
+  background: var(--white);
 }
 
 .btn:disabled {
-  color: var(--stamp);
-  text-shadow: 1px 1px 0 var(--hi);
+  color: var(--dgray);
   cursor: not-allowed;
 }
 
-/* default button gets the heavy outline, the old way */
-.btn.primary {
-  outline: 2px solid var(--edge);
-  outline-offset: 0;
-  font-weight: 600;
+/* default button carries the return glyph on the right */
+.btn.primary::after {
+  content: '\21B5';
+  margin-left: 10px;
+  font-weight: 700;
 }
 
 .btn.danger {
-  background: var(--heat);
-  color: #fff;
-}
-
-.btn.ghost {
-  background: var(--face);
+  color: #8a0000;
+  font-weight: 700;
 }
 
 .text-btn {
   background: none;
   border: 0;
-  padding: 4px 0;
-  color: var(--face-ink);
+  padding: 2px 0;
+  color: var(--text-2);
   font-size: var(--t-xs);
-  font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
 .text-btn.danger {
-  color: var(--heat);
+  color: var(--red);
 }
 
 .btn-row {
@@ -363,35 +447,42 @@
   flex-wrap: wrap;
 }
 
-/* option buttons */
+/* matrix of push-on push-off buttons */
 .seg {
   display: inline-flex;
-  gap: 4px;
   flex-wrap: wrap;
   align-self: flex-start;
+  border: 1px solid var(--black);
 }
 
 .seg button {
-  min-height: 32px;
+  min-height: 28px;
   padding: 0 12px;
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-  font-family: var(--pixel);
+  background: var(--lgray);
+  color: var(--black);
+  border: 0;
+  box-shadow: var(--raised);
   font-size: var(--t-xs);
+}
+
+[data-theme='night'] .seg button {
+  color: var(--chrome-ink);
 }
 
 .seg button[aria-selected='true'],
 .seg button[aria-checked='true'] {
-  box-shadow: var(--bevel-in);
-  background-image: radial-gradient(var(--hi) 0.5px, transparent 0.6px);
-  background-size: 2px 2px;
-  font-weight: 600;
+  background: var(--white);
+  box-shadow: var(--pressed);
+}
+
+[data-theme='night'] .seg button[aria-checked='true'],
+[data-theme='night'] .seg button[aria-selected='true'] {
+  background: var(--sel);
+  color: #000;
 }
 
 .seg button:disabled {
-  color: var(--stamp);
+  color: var(--dgray);
 }
 
 /* ---- forms ---- */
@@ -399,17 +490,18 @@
   display: grid;
   gap: 4px;
   font-size: var(--t-xs);
+  color: var(--text-2);
 }
 
+/* text fields are white in NeXT, kept dark here so the screen stays dim */
 .field-input {
   display: flex;
   align-items: center;
   gap: 8px;
   padding: 0 8px;
-  background: var(--canvas);
-  color: var(--cink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
+  background: var(--well);
+  color: var(--text);
+  box-shadow: var(--sunk);
 }
 
 .field-input input,
@@ -417,26 +509,26 @@
   border: 0;
   background: none;
   outline: none;
-  min-height: 36px;
+  min-height: 30px;
   width: 100%;
   min-width: 0;
-  color: var(--cink);
-  font-family: var(--pixel);
+  color: var(--text);
   font-size: var(--t-sm);
+  font-variant-numeric: tabular-nums;
 }
 
 .field-input .faint {
-  color: var(--cink-2);
+  color: var(--text-3);
 }
 
 .field-input select option {
-  background: var(--canvas);
+  background: var(--content);
 }
 
 .field-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px 12px;
 }
 
 .inline {
@@ -446,28 +538,22 @@
 }
 
 .inline select {
-  min-height: 36px;
+  min-height: 30px;
   padding: 0 6px;
-  background: var(--canvas);
-  color: var(--cink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
-  font-family: var(--pixel);
+  background: var(--well);
+  color: var(--text);
+  border: 0;
+  box-shadow: var(--sunk);
 }
 
-/* checkbox, the square kind with an x */
+/* NeXT switch: a little raised square that shows a check when on */
 .toggle {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   cursor: pointer;
   font-size: var(--t-sm);
-  min-height: 32px;
-}
-
-.panel-head .toggle {
-  color: var(--title-ink);
-  min-height: 22px;
+  min-height: 26px;
 }
 
 .toggle input {
@@ -477,112 +563,182 @@
 }
 
 .switch {
-  width: 18px;
-  height: 18px;
+  width: 15px;
+  height: 15px;
   flex: none;
   position: relative;
-  background: var(--canvas);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in-sm);
+  background: var(--lgray);
+  box-shadow: var(--raised);
 }
 
-.toggle input:checked + .switch::before,
 .toggle input:checked + .switch::after {
   content: '';
   position: absolute;
-  left: 2px;
-  right: 2px;
-  top: 7px;
-  height: 2px;
-  background: var(--cink);
-  transform: rotate(45deg);
-}
-
-.toggle input:checked + .switch::after {
-  transform: rotate(-45deg);
+  left: 4px;
+  top: 1px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--black);
+  border-width: 0 2px 2px 0;
+  transform: rotate(40deg);
 }
 
 .toggle input:focus-visible + .switch {
-  outline: 1px dotted currentColor;
+  outline: 1px dashed currentColor;
   outline-offset: 2px;
 }
 
-/* ---- alarms, little dialog windows ---- */
+/* ---- attention panels ---- */
 .alarms {
   display: grid;
-  gap: 6px;
-  max-width: 1400px;
+  gap: 8px;
+  max-width: 1500px;
+  width: 100%;
   margin: 0 auto var(--gap);
 }
 
-.alarm {
+.attention {
+  border: 1px solid var(--black);
+  background: var(--lgray);
+  color: var(--black);
+}
+
+[data-theme='night'] .attention {
+  color: var(--chrome-ink);
+}
+
+.att-bar {
+  height: 8px;
+  background: var(--black);
+}
+
+.att-body {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 44px 1fr auto;
   align-items: center;
-  gap: 12px;
-  padding: 4px 6px 6px;
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
+  gap: 14px;
+  padding: 10px 12px;
+  box-shadow: inset 1px 1px 0 var(--white), inset -1px -1px 0 var(--dgray);
 }
 
-.alarm-text {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
+.att-icon {
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  font-weight: 700;
+  background: var(--dgray);
+  color: var(--white);
+  border: 1px solid var(--black);
 }
 
-.alarm-text strong {
-  font-family: var(--pixel);
-  font-weight: 600;
-  font-size: var(--t-sm);
-  padding: 4px 10px;
-  background: var(--stamp);
-  color: #fff;
-  white-space: nowrap;
-}
-
-.alarm[data-sev='warn'] .alarm-text strong {
-  background: var(--warn);
+.attention[data-sev='warn'] .att-icon {
+  background: var(--amber);
   color: #000;
 }
 
-.alarm[data-sev='crit'] .alarm-text strong {
-  background: var(--heat);
+.attention[data-sev='crit'] .att-icon {
+  background: var(--red);
   color: #fff;
 }
 
-.alarm[data-sev='crit']:not([data-acked]) .alarm-text strong {
-  animation: blink 0.9s steps(2) infinite;
+.att-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
 }
 
-.alarm-text span {
-  font-size: var(--t-sm);
+.att-text strong {
+  font-size: var(--t-lg);
+  font-weight: 700;
 }
 
-.alarm-actions,
-.alarm-more {
+.att-buttons {
   display: flex;
-  gap: 6px;
+  gap: 8px;
 }
 
-.alarm-actions button,
-.alarm-more button {
-  min-height: 30px;
-  padding: 0 10px;
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
-  font-family: var(--pixel);
+.acked {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
   font-size: var(--t-xs);
 }
 
+.acked span {
+  padding: 2px 8px;
+  background: var(--content);
+  border: 1px solid var(--black);
+  color: var(--text-2);
+}
+
+.acked span[data-sev='crit'] {
+  color: var(--red);
+}
+
+.acked span[data-sev='warn'] {
+  color: var(--amber);
+}
+
 @media (max-width: 720px) {
-  .alarm {
-    grid-template-columns: 1fr;
+  .att-body {
+    grid-template-columns: 40px 1fr;
+  }
+  .att-buttons {
+    grid-column: 1 / -1;
+    justify-content: flex-end;
+  }
+}
+
+/* ---- telltales, inside the dock tile ---- */
+.telltales {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 18px);
+  gap: 1px;
+}
+
+.telltales li {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  background: #2a2a2c;
+  color: #4d4d50;
+}
+
+[data-theme='night'] .telltales li {
+  background: #000;
+  color: var(--dgray);
+}
+
+.telltales svg {
+  width: 13px;
+  height: 13px;
+}
+
+.telltales li[data-light='amber'] {
+  background: var(--amber);
+  color: #000;
+}
+
+.telltales li[data-light='red'] {
+  background: var(--red);
+  color: #fff;
+  animation: blink 1.2s steps(2) infinite;
+}
+
+.telltales li[data-light='green'] {
+  background: var(--green);
+  color: #000;
+}
+
+@media (max-width: 820px) {
+  .telltales {
+    grid-template-columns: repeat(9, 18px);
   }
 }
 
@@ -593,50 +749,44 @@
 
 .big {
   font-size: var(--t-md);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .muted {
-  color: var(--face-ink-2);
+  color: var(--text-2);
 }
 
 .faint {
-  color: var(--stamp);
+  color: var(--text-3);
 }
 
 .error {
-  background: var(--heat);
-  color: #fff;
-  padding: 4px 8px;
+  color: var(--red);
   font-size: var(--t-xs);
-  align-self: flex-start;
+  font-weight: 700;
 }
 
 .stats {
   display: grid;
   grid-template-columns: auto 1fr;
-  gap: 6px 16px;
+  gap: 5px 16px;
   margin: 0;
-  padding: 10px 12px;
-  background: var(--canvas);
-  color: var(--cink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
   font-size: var(--t-sm);
 }
 
 .stats dt {
-  color: var(--cink-2);
+  color: var(--text-2);
 }
 
 .stats dd {
   margin: 0;
   text-align: right;
-  font-family: var(--pixel);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .stats .faint {
-  color: var(--cink-2);
+  font-weight: 400;
 }
 
 .stats.cols {
@@ -651,15 +801,13 @@
 
 .empty {
   max-width: 420px;
-  margin: 12vh auto 0;
+  margin: 10vh auto 0;
   display: grid;
   gap: 12px;
   justify-items: start;
   padding: 16px;
-  background: var(--face);
-  color: var(--face-ink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-out);
+  background: var(--content);
+  border: 1px solid var(--black);
 }
 
 .console {
@@ -667,83 +815,11 @@
   max-height: 240px;
   overflow: auto;
   padding: 8px 10px;
-  background: var(--canvas);
-  color: var(--cink);
-  border: 1px solid var(--edge);
-  box-shadow: var(--bevel-in);
-  font-family: var(--pixel);
-  font-size: 13px;
+  background: var(--well);
+  color: var(--text);
+  box-shadow: var(--sunk);
+  font-family: 'Ohlfs', Courier, monospace;
+  font-size: 12px;
   line-height: 1.45;
   white-space: pre-wrap;
-}
-
-.hide-sm {
-  display: grid;
-}
-
-@media (max-width: 720px) {
-  .hide-sm {
-    display: none;
-  }
-}
-
-.btn,
-.seg button,
-.alarm-actions button,
-.alarm-more button,
-.icon-btn {
-  border-radius: var(--btn-radius);
-}
-
-/* ---- system 7 ---- */
-[data-theme='day'] .panel,
-[data-theme='day'] .empty,
-[data-theme='day'] .alarm {
-  box-shadow: 2px 2px 0 #000;
-}
-
-[data-theme='day'] .panel-head {
-  margin: 0;
-  border-bottom: 1px solid #000;
-  /* the pinstripe title bar */
-  background: repeating-linear-gradient(to bottom, #fff 0 1px, #000 1px 2px) 0 4px / 100% calc(100% - 8px) no-repeat, #fff;
-  background-origin: content-box;
-}
-
-[data-theme='day'] .panel-head h2 {
-  background: #fff;
-  padding: 0 8px;
-}
-
-[data-theme='day'] .panel-aside .text-btn {
-  border-radius: 0;
-}
-
-[data-theme='day'] .btn.primary {
-  outline: 3px solid #000;
-  outline-offset: 2px;
-}
-
-[data-theme='day'] .btn:active:not(:disabled),
-[data-theme='day'] .seg button[aria-checked='true'],
-[data-theme='day'] .seg button[aria-selected='true'] {
-  background: #000;
-  color: #fff;
-  background-image: none;
-}
-
-[data-theme='day'] .lcd[data-state='warn'],
-[data-theme='day'] .lcd[data-state='crit'] {
-  background: #000;
-  color: #fff;
-}
-
-[data-theme='day'] .lcd[data-state] .lcd-unit {
-  color: #fff;
-}
-
-/* ---- nextstep ---- */
-[data-theme='dusk'] .panel-head h2,
-[data-theme='night'] .panel-head h2 {
-  font-weight: 700;
 }

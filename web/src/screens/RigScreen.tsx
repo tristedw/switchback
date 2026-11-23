@@ -28,7 +28,7 @@ export function RigScreen({ go }: { go: (s: ScreenId) => void }) {
 
   return (
     <div className="screen rig-screen">
-      <Panel title="Rig" className="rig-hero">
+      <Panel primary title="Rig" className="rig-hero">
         <div className="rig-canvas">
           <Rig />
         </div>

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { TopBar, Nav, AlarmStack, SCREENS, type ScreenId } from './ui/Chrome'
+import { MainMenu, Dock, AlarmStack, SCREENS, type ScreenId } from './ui/Chrome'
+import { ScreenCtx, MiniTray, wm } from './ui/Window'
 import { RigScreen } from './screens/RigScreen'
 import { DriveScreen } from './screens/DriveScreen'
 import { CampScreen } from './screens/CampScreen'
@@ -8,13 +9,13 @@ import { CodesScreen } from './screens/CodesScreen'
 import { LogScreen } from './screens/LogScreen'
 import { SetupScreen } from './screens/SetupScreen'
 import { useSettings, type ThemeMode } from './core/settings'
-import { useAlarms, ackAll } from './core/alarms'
+import { ackAll } from './core/alarms'
 import { sunPosition } from './core/sky'
 import { useNow } from './ui/hooks'
 
+// auto goes red once it's properly dark out
 function resolveTheme(mode: ThemeMode, lat: number, lon: number, now: number) {
   if (mode !== 'auto') return mode
-  // auto stays on next unless it's proper night, the white one is opt in for glare
   return sunPosition(now, lat, lon).altitude < -12 ? 'night' : 'dusk'
 }
 
@@ -26,19 +27,17 @@ function initialScreen(): ScreenId {
 export function App() {
   const [screen, setScreen] = useState<ScreenId>(initialScreen)
   const s = useSettings()
-  const alarms = useAlarms()
   const now = useNow(60000)
 
   const go = (id: ScreenId) => {
     setScreen(id)
+    wm.set({ key: '' })
     history.replaceState(null, '', `#${id}`)
   }
 
   const theme = resolveTheme(s.theme, s.lat, s.lon, now)
   useEffect(() => {
     document.documentElement.dataset.theme = theme
-    const meta = document.querySelector('meta[name="theme-color"]')
-    meta?.setAttribute('content', getComputedStyle(document.documentElement).getPropertyValue('--bg').trim())
   }, [theme])
 
   useEffect(() => {
@@ -52,23 +51,25 @@ export function App() {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
-  const unacked = alarms.filter((a) => !a.acked).length
-  const badges: Partial<Record<ScreenId, number>> = { rig: unacked }
-
   return (
-    <div className="shell">
-      <TopBar onNav={go} />
-      <main className="main" id="main">
-        <AlarmStack />
-        {screen === 'rig' && <RigScreen go={go} />}
-        {screen === 'drive' && <DriveScreen />}
-        {screen === 'camp' && <CampScreen />}
-        {screen === 'sky' && <SkyScreen />}
-        {screen === 'codes' && <CodesScreen go={go} />}
-        {screen === 'log' && <LogScreen />}
-        {screen === 'setup' && <SetupScreen />}
-      </main>
-      <Nav current={screen} onNav={go} badges={badges} />
-    </div>
+    <ScreenCtx.Provider value={screen}>
+      <div className="workspace">
+        <MainMenu current={screen} onNav={go} nightOn={theme === 'night'} />
+        <main className="desk" id="main">
+          <div className="desk-inner">
+            <AlarmStack />
+            {screen === 'rig' && <RigScreen go={go} />}
+            {screen === 'drive' && <DriveScreen />}
+            {screen === 'camp' && <CampScreen />}
+            {screen === 'sky' && <SkyScreen />}
+            {screen === 'codes' && <CodesScreen go={go} />}
+            {screen === 'log' && <LogScreen />}
+            {screen === 'setup' && <SetupScreen />}
+            <MiniTray />
+          </div>
+        </main>
+        <Dock onNav={go} />
+      </div>
+    </ScreenCtx.Provider>
   )
 }

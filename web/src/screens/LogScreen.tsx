@@ -59,7 +59,7 @@ export function LogScreen() {
 
   return (
     <div className="screen log-screen">
-      <Panel title="Timeline" className="timeline" aside={<button className="text-btn" onClick={() => confirm('Clear the whole log?') && clearEvents()}>Clear log</button>}>
+      <Panel primary title="Timeline" className="timeline" aside={<button className="text-btn" onClick={() => confirm('Clear the whole log?') && clearEvents()}>Clear log</button>}>
         <div className="seg" role="tablist" aria-label="Filter log">
           {FILTERS.map((f) => (
             <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => setFilter(f.id)}>
