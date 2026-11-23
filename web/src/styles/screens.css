@@ -677,3 +677,8 @@
     font-size: 26px;
   }
 }
+
+.rig-alert {
+  fill: var(--red);
+  font-weight: 700;
+}

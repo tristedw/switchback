@@ -25,6 +25,21 @@
 
   --sel: #ffffff;
   --sel-ink: #000000;
+
+  --veh-hi: #d4d4d6;
+  --veh-lo: #8a8a8e;
+  --veh-line: #000000;
+  --veh-crease: #6a6a6e;
+  --shell-hi: #ececec;
+  --shell-lo: #a9a9ad;
+  --glass-hi: #424656;
+  --glass-lo: #0d0e12;
+  --glint: #ffffff;
+  --tire: #141414;
+  --tire-wall: #3a3a3a;
+  --stripe-1: #f2b233;
+  --stripe-2: #d9822b;
+  --stripe-3: #8a4b22;
   color-scheme: dark;
 }
 
@@ -52,6 +67,21 @@
 
   --sel: #ff4a32;
   --sel-ink: #000000;
+
+  --veh-hi: #4a0c06;
+  --veh-lo: #1e0402;
+  --veh-line: #ff4a32;
+  --veh-crease: #6e1b11;
+  --shell-hi: #5e140b;
+  --shell-lo: #260502;
+  --glass-hi: #120100;
+  --glass-lo: #000000;
+  --glint: #ff4a32;
+  --tire: #000000;
+  --tire-wall: #3a0b06;
+  --stripe-1: #ff4a32;
+  --stripe-2: #a8261a;
+  --stripe-3: #6e1b11;
   color-scheme: dark;
 }
 

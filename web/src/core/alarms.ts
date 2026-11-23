@@ -272,11 +272,12 @@ export function evaluate(now = Date.now()) {
     }
   }
 
-  // an unacked critical gets a reminder blip every couple of minutes, nothing more
-  const loud = active.find((a) => a.sev === 'crit' && !a.acked && !isSnoozed(a.id, now))
-  if (loud && s.sound && now - lastBeep > 120000) {
+  // keeps blipping until it's acked or snoozed. soft enough to live with, not ignorable
+  const nagging = active.filter((a) => a.sev !== 'info' && !a.acked && !isSnoozed(a.id, now))
+  if (nagging.length && s.sound && now - lastBeep >= 4000) {
     lastBeep = now
-    doubleBeep()
+    if (nagging.some((a) => a.sev === 'crit')) doubleBeep()
+    else beep()
   }
 
   if (changed) emit()
@@ -291,10 +292,9 @@ function isSnoozed(id: string, now = Date.now()) {
 function announce(rule: Rule, ctx: Ctx, sev: Severity) {
   if (isSnoozed(rule.id)) return
   if (!ctx.s.sound || sev === 'info') return
-  if (sev === 'crit') {
-    lastBeep = Date.now()
-    doubleBeep()
-  } else beep()
+  lastBeep = Date.now()
+  if (sev === 'crit') doubleBeep()
+  else beep()
 }
 
 export function ack(id: string) {

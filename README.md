@@ -12,7 +12,7 @@ Dashboard for my truck and slide in camper. Runs on a 7" screen in the camper of
 
 ## What it does
 
-**Rig** is the home screen. Side view of the truck and camper that actually tilts with the accelerometer, tank levels fill, door goes red when it's open, solar strip lights up, wheels spin when moving.
+**Rig** is the home screen. Side view of the truck and camper drawn in the same grey as the rest of the UI. It tilts with the accelerometer, the outline goes red when the door's open or the coolant's hot, the window glows when the furnace runs, the solar panel lights up, wheels spin when moving.
 
 **Drive** has a tach, speedo and coolant gauge, load/boost/IAT/oil/battery, live fuel burn and trip economy, range left in the tank, fuel trims on gas trucks, a 0 to 100 timer, and a grade panel for the Coquihalla: elevation, climb rate, grade, coolant trend and minutes until it hits the warning line at the current rate.
 
@@ -44,7 +44,7 @@ Alarms that run all the time:
 | Pressure falling | 3 hPa drop over 3 hours |
 | Quiet hours | idling at camp after 10pm |
 
-Alarms come up as attention panels with a quiet beep, two for critical. An unacked critical blips again every couple of minutes. Return acks the front one, Esc acks all. Thresholds live in Setup.
+Alarms come up as attention panels with a quiet beep, two for critical, repeating every few seconds until you hit OK or Snooze. Return acks the front one, Esc acks all. Thresholds live in Setup.
 
 ### Other bits
 

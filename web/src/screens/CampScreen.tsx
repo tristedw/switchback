@@ -1,6 +1,6 @@
 import { Readout, Panel } from '../ui/Readout'
 import { Spark } from '../ui/Spark'
-import { RearView } from '../ui/Rig'
+import { RearView, PitchView } from '../ui/Rig'
 import { useTel } from '../ui/hooks'
 import { useSettings } from '../core/settings'
 import * as U from '../core/units'
@@ -11,22 +11,6 @@ import { batteryHoursLeft, hoursToFull } from '../core/estimates'
 import { solarForecastWh } from '../core/sky'
 import { poke, simLeaking } from '../sources/sim'
 import { sendToHomebase } from '../sources/homebase'
-
-// side on: the camper floor tips with pitch
-function PitchView({ pitch }: { pitch: number | undefined }) {
-  const p = pitch ?? 0
-  return (
-    <svg className="pitchview" viewBox="0 0 220 120" role="img" aria-label={`Pitch ${p.toFixed(1)} degrees`}>
-      <line x1="6" x2="214" y1="104" y2="104" stroke="var(--ground)" strokeWidth="2" />
-      <g style={{ transform: `rotate(${-p * 3}deg)`, transformOrigin: p >= 0 ? '62px 104px' : '168px 104px', transition: 'transform 0.4s' }}>
-        <path d="M26 86 V36 Q26 28 34 28 H170 Q190 28 192 40 L194 54 H150 V86 Z" fill="var(--rig-fill)" stroke="var(--rig-line)" strokeWidth="2" />
-        <circle cx="62" cy="94" r="10" fill="var(--canvas)" stroke="var(--rig-line)" strokeWidth="2" />
-        <circle cx="168" cy="94" r="10" fill="var(--canvas)" stroke="var(--rig-line)" strokeWidth="2" />
-        <line x1="40" x2="140" y1="40" y2="40" stroke="var(--amber)" strokeWidth="2" />
-      </g>
-    </svg>
-  )
-}
 
 function Bubble({ pitch, roll, tol }: { pitch?: number; roll?: number; tol: number }) {
   // full scale is 5 degrees
