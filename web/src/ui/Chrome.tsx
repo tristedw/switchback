@@ -20,8 +20,8 @@ export const SCREENS: { id: ScreenId; label: string; icon: () => JSX.Element; ke
   { id: 'setup', label: 'Setup', icon: Icon.setup, key: '7' },
 ]
 
-const THEME_NEXT: Record<ThemeMode, ThemeMode> = { auto: 'day', day: 'dusk', dusk: 'night', night: 'phosphor', phosphor: 'auto' }
-const THEME_LABEL: Record<ThemeMode, string> = { auto: 'Auto', day: 'Light', dusk: 'Dark', night: 'Amber', phosphor: 'Phosphor' }
+const THEME_NEXT: Record<ThemeMode, ThemeMode> = { auto: 'dusk', dusk: 'day', day: 'night', night: 'auto' }
+const THEME_LABEL: Record<ThemeMode, string> = { auto: 'Auto', dusk: 'NeXT', day: 'System 7', night: 'Night' }
 
 export function TopBar({ onNav }: { onNav: (s: ScreenId) => void }) {
   const st = app.use()

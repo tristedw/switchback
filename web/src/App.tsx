@@ -14,10 +14,8 @@ import { useNow } from './ui/hooks'
 
 function resolveTheme(mode: ThemeMode, lat: number, lon: number, now: number) {
   if (mode !== 'auto') return mode
-  const alt = sunPosition(now, lat, lon).altitude
-  if (alt > 8) return 'day'
-  if (alt > -12) return 'dusk'
-  return 'night'
+  // auto stays on next unless it's proper night, the white one is opt in for glare
+  return sunPosition(now, lat, lon).altitude < -12 ? 'night' : 'dusk'
 }
 
 function initialScreen(): ScreenId {

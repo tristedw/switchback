@@ -1,15 +1,12 @@
-@import '@fontsource/poppins/400.css';
-@import '@fontsource/poppins/500.css';
-@import '@fontsource/poppins/600.css';
 @import '@fontsource/pixelify-sans/400.css';
 @import '@fontsource/pixelify-sans/600.css';
 
-/* palettes lifted from the Aster Initiative desktop themes. 4 grey win3.1 bevels,
-   chrome is the "face", data lives on "canvas" wells sunk into it */
+/* two looks. NeXTSTEP for the dark grey default, System 7 for daytime glare.
+   night is the NeXT layout in red only so you keep your night vision */
 :root,
-[data-theme='day'] {
+[data-theme='dusk'] {
   --desk: #555555;
-  --desk-dot: #aaaaaa;
+  --desk-dot: #555555;
   --face: #aaaaaa;
   --hi: #ffffff;
   --lo: #555555;
@@ -20,86 +17,89 @@
   --title: #000000;
   --title-ink: #ffffff;
   --face-ink: #000000;
-  --face-ink-2: #2a2a2a;
-  --stamp: #808080;
-  --water: #0072b2;
-  --waste: #808080;
-  --heat: #ff0000;
-  --warn: #ffc40c;
-  --ok: #00a000;
-  --orange: #f5793a;
+  --face-ink-2: #333333;
+  --stamp: #555555;
+  --water: #2a5db0;
+  --waste: #555555;
+  --heat: #cc1f1f;
+  --warn: #f2c200;
+  --ok: #2a8a2a;
+  --orange: #e0702a;
+  --bevel-out: inset 1px 1px 0 var(--hi), inset -1px -1px 0 #000, inset -2px -2px 0 var(--lo);
+  --bevel-in: inset 1px 1px 0 var(--lo), inset 2px 2px 0 #000, inset -1px -1px 0 var(--hi);
+  --bevel-out-sm: inset 1px 1px 0 var(--hi), inset -1px -1px 0 var(--lo);
+  --bevel-in-sm: inset 1px 1px 0 var(--lo), inset -1px -1px 0 var(--hi);
+  --win-shadow: none;
+  --btn-radius: 0;
+  --ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --display-weight: 700;
   color-scheme: light;
 }
 
-[data-theme='dusk'] {
-  --desk: #000000;
-  --desk-dot: #3a3a3a;
-  --face: #5a5a5a;
-  --hi: #b4b4b4;
-  --lo: #262626;
+[data-theme='day'] {
+  --desk: #ffffff;
+  --desk-dot: #000000;
+  --face: #ffffff;
+  --hi: #ffffff;
+  --lo: #000000;
   --edge: #000000;
-  --canvas: #000000;
-  --cink: #ffffff;
-  --cink-2: #8c8c8c;
-  --title: #b4b4b4;
+  --canvas: #ffffff;
+  --cink: #000000;
+  --cink-2: #444444;
+  --title: #ffffff;
   --title-ink: #000000;
-  --face-ink: #ffffff;
-  --face-ink-2: #d0d0d0;
-  --stamp: #8c8c8c;
-  --water: #6e9bff;
-  --waste: #8c8c8c;
-  --heat: #ff3b30;
-  --warn: #ffc40c;
-  --ok: #00ff02;
-  --orange: #f5793a;
-  color-scheme: dark;
+  --face-ink: #000000;
+  --face-ink-2: #333333;
+  --stamp: #777777;
+  --water: #000000;
+  --waste: #777777;
+  --heat: #000000;
+  --warn: #000000;
+  --ok: #000000;
+  --orange: #000000;
+  --bevel-out: none;
+  --bevel-in: none;
+  --bevel-out-sm: none;
+  --bevel-in-sm: none;
+  --win-shadow: 2px 2px 0 #000;
+  --btn-radius: 7px;
+  --ui: 'Pixelify Sans', Geneva, 'Helvetica Neue', sans-serif;
+  --display: 'Pixelify Sans', Geneva, 'Helvetica Neue', sans-serif;
+  --display-weight: 600;
+  color-scheme: light;
 }
 
 [data-theme='night'] {
-  --desk: #150c00;
-  --desk-dot: #3a2600;
-  --face: #2a1800;
-  --hi: #946209;
-  --lo: #0a0600;
+  --desk: #0a0000;
+  --desk-dot: #0a0000;
+  --face: #1c0402;
+  --hi: #5a1208;
+  --lo: #000000;
   --edge: #000000;
-  --canvas: #150c00;
-  --cink: #ffb000;
-  --cink-2: #c98a0f;
-  --title: #c98a0f;
-  --title-ink: #150c00;
-  --face-ink: #ffb000;
-  --face-ink-2: #c98a0f;
-  --stamp: #946209;
-  --water: #ffd980;
-  --waste: #946209;
-  --heat: #ffd980;
-  --warn: #ffb000;
-  --ok: #c98a0f;
-  --orange: #ffb000;
-  color-scheme: dark;
-}
-
-[data-theme='phosphor'] {
-  --desk: #020802;
-  --desk-dot: #0f2a12;
-  --face: #0b1f0d;
-  --hi: #2fa845;
-  --lo: #010401;
-  --edge: #000000;
-  --canvas: #020802;
-  --cink: #3df23d;
-  --cink-2: #1f8c33;
-  --title: #2fa845;
-  --title-ink: #020802;
-  --face-ink: #3df23d;
-  --face-ink-2: #2fa845;
-  --stamp: #1f8c33;
-  --water: #a5ffa5;
-  --waste: #1f8c33;
-  --heat: #a5ffa5;
-  --warn: #3df23d;
-  --ok: #2fa845;
-  --orange: #3df23d;
+  --canvas: #000000;
+  --cink: #ff3b24;
+  --cink-2: #a8261a;
+  --title: #000000;
+  --title-ink: #ff3b24;
+  --face-ink: #ff3b24;
+  --face-ink-2: #c42d1c;
+  --stamp: #7a1c12;
+  --water: #ff3b24;
+  --waste: #7a1c12;
+  --heat: #ff6a50;
+  --warn: #ff3b24;
+  --ok: #a8261a;
+  --orange: #ff3b24;
+  --bevel-out: inset 1px 1px 0 var(--hi), inset -1px -1px 0 #000;
+  --bevel-in: inset 1px 1px 0 #000, inset -1px -1px 0 var(--hi);
+  --bevel-out-sm: inset 1px 1px 0 var(--hi), inset -1px -1px 0 #000;
+  --bevel-in-sm: inset 1px 1px 0 #000, inset -1px -1px 0 var(--hi);
+  --win-shadow: none;
+  --btn-radius: 0;
+  --ui: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --display-weight: 700;
   color-scheme: dark;
 }
 
@@ -128,8 +128,8 @@
 }
 
 :root {
-  --font: 'Poppins', system-ui, sans-serif;
-  --pixel: 'Pixelify Sans', 'Poppins', monospace;
+  --font: var(--ui);
+  --pixel: var(--display);
   /* modular scale, ~1.25 */
   --t-xs: 0.8125rem;
   --t-sm: 0.9375rem;
@@ -158,9 +158,6 @@ body,
 
 body {
   background-color: var(--desk);
-  /* aster's 4x4 desktop stipple */
-  background-image: radial-gradient(var(--desk-dot) 1px, transparent 1px);
-  background-size: 4px 4px;
   color: var(--ink);
   font-family: var(--font);
   font-size: var(--t-sm);
@@ -230,4 +227,10 @@ p {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* system 7 desktop is the 50% grey dither */
+[data-theme='day'] body {
+  background-image: conic-gradient(#000 25%, #fff 0 50%, #000 0 75%, #fff 0);
+  background-size: 2px 2px;
 }

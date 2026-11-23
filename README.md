@@ -48,7 +48,7 @@ Crit alarms klaxon until acknowledged and get read out with speech synthesis. Ev
 
 ### Other bits
 
-- win 3.1 style chrome borrowed from the desktop in Aster Initiative, with its Light, Dark, Amber and Phosphor palettes. auto flips between them with the sun
+- NeXTSTEP style by default, a System 7 theme for sun glare, and a red only night theme so you keep your night vision. auto switches to night after dark
 - runs offline as a PWA, keeps the screen awake
 - metric or imperial
 - vehicle profiles for my F250 6.0 and the Tahoe 5.3

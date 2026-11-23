@@ -1,7 +1,7 @@
 import { useSyncExternalStore } from 'react'
 
 export type Units = 'metric' | 'imperial'
-export type ThemeMode = 'auto' | 'day' | 'dusk' | 'night' | 'phosphor'
+export type ThemeMode = 'auto' | 'day' | 'dusk' | 'night'
 
 export interface VehicleProfile {
   id: string
@@ -62,7 +62,7 @@ export interface Settings {
 
 const DEFAULTS: Settings = {
   units: 'metric',
-  theme: 'auto',
+  theme: 'dusk',
   profileId: 'f250-60',
   homebaseUrl: '',
   pollMs: 0,

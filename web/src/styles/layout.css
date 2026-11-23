@@ -1,14 +1,14 @@
-/* bevels, straight out of the aster sprites: black edge, white top left, grey bottom right */
+/* bevels: black edge, light top left, dark bottom right. values come from the theme */
 .raised {
   background: var(--face);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+  box-shadow: var(--bevel-out);
 }
 
 .sunken {
   background: var(--canvas);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
 }
 
 .shell {
@@ -52,7 +52,7 @@
   gap: 2px;
   background: var(--canvas);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
 }
 
 .telltales li {
@@ -159,14 +159,14 @@
   place-items: center;
   background: var(--face);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+  box-shadow: var(--bevel-out);
   color: var(--face-ink);
   font-family: var(--pixel);
   font-size: var(--t-xs);
 }
 
 .icon-btn:active {
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
 }
 
 .icon-btn svg {
@@ -208,7 +208,7 @@
   gap: 7px;
   background: var(--face);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--hi), inset -2px -2px 0 var(--lo);
+  box-shadow: var(--bevel-out);
   color: var(--face-ink);
   font-family: var(--pixel);
   font-size: var(--t-sm);
@@ -222,7 +222,7 @@
 
 /* active screen is the pushed in button, like a taskbar */
 .nav button[aria-current='page'] {
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
   background-image: radial-gradient(var(--hi) 0.5px, transparent 0.6px);
   background-size: 2px 2px;
   font-weight: 600;
@@ -281,4 +281,24 @@
   .brand span {
     display: none;
   }
+}
+
+[data-theme='day'] .topbar {
+  box-shadow: none;
+  border-bottom: 1px solid #000;
+}
+
+[data-theme='day'] .nav {
+  box-shadow: none;
+  border-top: 1px solid #000;
+}
+
+[data-theme='day'] .nav button[aria-current='page'] {
+  background: #000;
+  color: #fff;
+}
+
+[data-theme='day'] .telltales li[data-light] {
+  background: #000;
+  color: #fff;
 }

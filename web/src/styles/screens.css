@@ -7,7 +7,7 @@
 .rig-canvas {
   background: var(--canvas);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
   padding: 8px 6px 2px;
 }
 
@@ -431,7 +431,7 @@
   background: var(--canvas);
   color: var(--cink);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
   padding: 8px 10px;
   max-height: 70vh;
   overflow-y: auto;
@@ -527,7 +527,7 @@
   background: var(--canvas);
   color: var(--cink);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
   padding: 0 8px;
   min-width: 0;
   font-family: var(--pixel);
@@ -659,7 +659,7 @@
 .bubble {
   background: var(--canvas);
   border: 1px solid var(--edge);
-  box-shadow: inset 2px 2px 0 var(--lo), inset -2px -2px 0 var(--hi);
+  box-shadow: var(--bevel-in);
 }
 
 .rig-side .rearview {

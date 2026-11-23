@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { fmt } from '../core/units'
 
-// numbers sit in a sunken white well, same as the fields in aster's desktop apps
+// numbers sit in a sunken white field like an old text box
 export function Lcd({ text, size = 'md', state, unit }: { text: string; size?: 'sm' | 'md' | 'lg' | 'xl'; state?: 'warn' | 'crit'; unit?: string }) {
   return (
     <span className="lcd" data-size={size} data-state={state}>
